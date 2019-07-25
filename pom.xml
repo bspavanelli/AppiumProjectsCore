@@ -1,14 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>br.com.bspavanelli.appium</groupId>
-  <artifactId>AppiumProjectsCore</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  
-  <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.bspavanelli.appium</groupId>
+	<artifactId>AppiumProjectsCore</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
 		<aspectj.version>1.9.4</aspectj.version>
 	</properties>
-	
-  <dependencies>
+
+	<dependencies>
 		<!-- https://mvnrepository.com/artifact/io.appium/java-client -->
 		<dependency>
 			<groupId>io.appium</groupId>
@@ -23,14 +25,6 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-		<!-- <dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.4.2</version>
-			<scope>test</scope>
-		</dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-junit4 -->
 		<dependency>
@@ -69,4 +63,19 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <executionOS>${env.OS}</executionOS>>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

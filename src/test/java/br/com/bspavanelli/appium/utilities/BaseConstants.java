@@ -2,7 +2,8 @@ package br.com.bspavanelli.appium.utilities;
 
 public class BaseConstants {
 
-	public static OS executionOS = OS.IOS;
+	//	public static OS executionOS = OS.ANDROID;
+	public static OS executionOS = OS.getOS(System.getProperty("executionOS"));
 
 	public enum OS {
 		ANDROID("Android"), IOS("IOS");
@@ -15,6 +16,15 @@ public class BaseConstants {
 
 		public String getValor() {
 			return valor;
+		}
+
+		public static OS getOS(String valor) {
+			for (OS os : OS.values()) {
+				if (os.valor.equals(valor))
+					return os;
+			}
+			throw new IllegalArgumentException(
+					"OS Not found! Possible options: 'IOS' and 'Android'. Option sent: '" + valor + "'");
 		}
 	}
 

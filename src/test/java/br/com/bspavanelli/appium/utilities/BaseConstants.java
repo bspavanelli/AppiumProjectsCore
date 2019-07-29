@@ -26,6 +26,10 @@ public class BaseConstants {
 			throw new IllegalArgumentException(
 					"OS Not found! Possible options: 'IOS' and 'Android'. Option sent: '" + valor + "'");
 		}
+		
+		public static OS valueOfIgnoreCase(String value) {
+			return valueOf(value.toUpperCase());
+		}
 	}
 
 	public static final String BASE_PACKAGE = "br.com.app";

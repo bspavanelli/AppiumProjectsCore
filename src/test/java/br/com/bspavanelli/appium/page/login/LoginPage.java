@@ -1,15 +1,41 @@
 package br.com.bspavanelli.appium.page.login;
 
-public interface LoginPage {
+import br.com.bspavanelli.appium.constants.login.LoginConstants;
+import br.com.bspavanelli.appium.utilities.screen_actions.ScreenActions;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.pagefactory.AndroidFindBy;
+import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
-	// Note que geralmente as implementações dos metodos da interface nas classes específicas da plataforma normalmente serão as mesmas, 
-	// mas podem haver diferenças por conta da plataforma, nese caso a arquitetura já está pronta caso precise de algum tratamente especifico para ios ou android
-	// Uma coisa que diferencia com certeza são as variáveis By, que mudam do IOS pro Android
+public class LoginPage extends ScreenActions {
 
-	// Retorna própria instancia para realizar chamadas em cascata nos testes
-	LoginPage writeUsername();
+	@AndroidFindBy(id = "")
+	@iOSXCUITFindBy(id = "")
+	private MobileElement FLD_USERNAME;
 
-	LoginPage writePassword();
+	@AndroidFindBy(id = "")
+	@iOSXCUITFindBy(id = "")
+	private MobileElement FLD_PASSWORD;
 
-	LoginPage clickLogin();
+	@AndroidFindBy(id = "")
+	@iOSXCUITFindBy(id = "")
+	private MobileElement BTN_LOGIN;
+
+	public LoginPage() {
+		initElements(this);
+	}
+
+	public LoginPage writeUsername() {
+		sendKeys(FLD_USERNAME, LoginConstants.USERNAME);
+		return this;
+	}
+
+	public LoginPage writePassword() {
+		sendKeys(FLD_PASSWORD, LoginConstants.PASSWORD);
+		return this;
+	}
+
+	public LoginPage clickLogin() {
+		click(BTN_LOGIN);
+		return this;
+	}
 }

@@ -1,5 +1,7 @@
 package br.com.bspavanelli.appium.utilities;
 
+import java.time.Duration;
+
 import br.com.bspavanelli.appium.utilities.enums.OS;
 
 public class BaseConstants {
@@ -13,5 +15,7 @@ public class BaseConstants {
 	public static final int DEFAULT_TIMEOUT = 30;
 	public static final int DEFAULT_IMPLICITLY_WAIT = 15;
 	public static final int DEFAULT_MAX_SCROLLS_TO_FIND_ELEMENT = 5;
+
+	public static final Duration DEFAULT_FACTORY_DURATION = Duration.ofSeconds(DEFAULT_IMPLICITLY_WAIT);
 
 }

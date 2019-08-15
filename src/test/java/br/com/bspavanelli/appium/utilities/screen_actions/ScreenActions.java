@@ -1,26 +1,26 @@
-package br.com.bspavanelli.appium.utilities.basepage;
+package br.com.bspavanelli.appium.utilities.screen_actions;
 
-import static br.com.bspavanelli.appium.utilities.BaseConstants.DEFAULT_IMPLICITLY_WAIT;
 import static br.com.bspavanelli.appium.utilities.DriverFactory.getDriver;
 import static io.appium.java_client.touch.WaitOptions.waitOptions;
 import static io.appium.java_client.touch.offset.PointOption.point;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.interactions.touch.TouchActions;
+import org.openqa.selenium.support.PageFactory;
 
 import br.com.bspavanelli.appium.utilities.BaseConstants;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 @SuppressWarnings({ "rawtypes" })
-public abstract class BasePage {
+public abstract class ScreenActions {
 	/**
 	 * Perform a sleep
 	 * 
@@ -36,97 +36,66 @@ public abstract class BasePage {
 	}
 
 	/**
-	 * Send keys to the element found using the By param
+	 * Send keys to the element
 	 * 
-	 * @param by
+	 * @param element
 	 * @param text
 	 */
-	public void sendKeys(By by, String text) {
-		getDriver().findElement(by)
-			.sendKeys(text);
+	public void sendKeys(MobileElement element, String text) {
+		element.sendKeys(text);
 	}
 
 	/**
-	 * Get the attribute value of the element found using the By param
+	 * Get the attribute value of the element
 	 * 
-	 * @param by
+	 * @param element
 	 * @param attribute
 	 * @return
 	 */
-	public String getAttribute(By by, String attribute) {
+	public String getAttribute(MobileElement element, String attribute) {
 		String text = "";
 		try {
-			text = getDriver().findElement(by)
-				.getAttribute(attribute);
+			text = element.getAttribute(attribute);
 		} catch (StaleElementReferenceException e) {
 			sleep(500);
-			text = getDriver().findElement(by)
-				.getAttribute(attribute);
+			text = element.getAttribute(attribute);
 		}
 		return removeOtherSpaces(text);
 	}
 
 	/**
-	 * Get the text of the element found using the By param
+	 * Get the text of the element
 	 * 
-	 * @param by
+	 * @param element
 	 * @return
 	 */
-	public String getText(By by) {
+	public String getText(MobileElement element) {
 		String text = "";
 		try {
-			text = getDriver().findElement(by)
-				.getText();
+			text = element.getText();
 		} catch (StaleElementReferenceException e) {
 			sleep(500);
-			text = getDriver().findElement(by)
-				.getText();
+			text = element.getText();
 		}
 		return removeOtherSpaces(text);
 	}
 
 	/**
-	 * Get the text of one particular element found using the By param.
+	 * Click on an element
 	 * 
-	 * @param by
-	 *            = By used to find the list of element
-	 * @param position
-	 *            = the position of the element list, -1 if the position desired is
-	 *            the last position
-	 * @return text of the element
+	 * @param element
 	 */
-	public String getText(By by, int position) {
-		List<MobileElement> elements = getDriver().findElements(by);
-
-		if (position == -1) {
-			return elements.get(elements.size() - 1)
-				.getText();
-		} else {
-			return elements.get(position)
-				.getText();
-		}
-	}
-
-	/**
-	 * Click on an element found using the By param
-	 * 
-	 * @param by
-	 */
-	public void click(By by) {
-		getDriver().findElement(by)
-			.click();
+	public void click(MobileElement element) {
+		element.click();
 		sleep(1000);
 	}
 
 	/**
-	 * Click on an element found in a list using the By param with the following
-	 * value of an attribute
+	 * Click on an element found in a list with the following value of an attribute
 	 * 
-	 * @param by
+	 * @param element
 	 */
-	public void click(By by, String attribute, String value) {
-		List<MobileElement> elements = getDriver().findElements(by);
-
+	public void click(List<MobileElement> elements, String attribute, String value) {
 		for (MobileElement element : elements) {
 			if (removeOtherSpaces(element.getAttribute(attribute)).equals(value)) {
 				element.click();
@@ -143,7 +112,7 @@ public abstract class BasePage {
 	 * @param text
 	 */
 	public void click(String text) {
-		click(By.xpath("//*[@text='" + text + "']"));
+		click(getDriver().findElement(By.xpath("//*[@text='" + text + "' or @value='" + text + "']")));
 	}
 
 	/**
@@ -154,70 +123,79 @@ public abstract class BasePage {
 	 * @param text
 	 */
 	public void click(String attribute, String value) {
-		click(By.xpath("//*[@" + attribute + "='" + value + "']"));
+		click(getDriver().findElement(By.xpath("//*[@" + attribute + "='" + value + "']")));
 	}
 
 	/**
 	 * Perform a long click on the element found with By param
 	 * 
-	 * @param by
+	 * @param element
 	 */
-	public void longClick(By by) {
+	public void longClick(MobileElement element) {
 		TouchActions action = new TouchActions(getDriver());
-		action.longPress(getDriver().findElement(by))
+		action.longPress(element)
 			.perform();
 	}
 
 	/**
 	 * Click on a Combo element and select the option searching by value
 	 * 
-	 * @param by
+	 * @param element
 	 *            = Element to click
 	 * @param value
 	 *            = Value to select
 	 */
-	public void selectCombo(By by, String value) {
-		getDriver().findElement(by)
-			.click();
+	public void selectCombo(MobileElement element, String value) {
+		element.click();
 		click(value);
 	}
 
 	/**
 	 * Verify if the attribute checked of the element is true
 	 * 
-	 * @param by
+	 * @param element
 	 * @return
 	 */
-	public boolean isChecked(By by) {
-		return getDriver().findElement(by)
-			.getAttribute("checked")
+	public boolean isChecked(MobileElement element) {
+		return element.getAttribute("checked")
 			.equals("true");
 	}
 
 	/**
-	 * Check if the element exists, searching by the given By param.
+	 * Check if the element exists
 	 * 
-	 * @param by
+	 * @param element
 	 * @return = true if found, false if not
 	 */
-	public boolean elementExists(By by) {
-		List<MobileElement> elementos = getDriver().findElements(by);
-		return elementos.size() > 0;
+	public boolean elementExists(MobileElement element) {
+		try {
+			element.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
-	 * Check if the element exists, searching by the given By param.
+	 * Check if the element exists
 	 * 
-	 * @param by
+	 * @param element
+	 * @return = true if found, false if not
+	 */
+	public boolean elementExists(List<MobileElement> elements) {
+		return elements.size() > 0;
+	}
+
+	/**
+	 * Check if the element exists
+	 * 
+	 * @param element
 	 * @param timeout
 	 *            = the implicitly wait to be set before the check
 	 * @return = true if found, false if not
 	 */
-	public boolean elementExists(By by, int timeout) {
-		setImplicitlyWait(timeout);
-		List<MobileElement> elementos = getDriver().findElements(by);
-		setImplicitlyWait();
-		return elementos.size() > 0;
+	public boolean elementExists(List<MobileElement> elements, int timeout) {
+		return elements.size() > 0;
 	}
 
 	/**
@@ -227,7 +205,8 @@ public abstract class BasePage {
 	 * @return = true if found, false if not
 	 */
 	public boolean elementExists(String text) {
-		return elementExists(MobileBy.xpath("//*[@text=\"" + text + "\"]"));
+		return elementExists(
+				getDriver().findElements(MobileBy.xpath("//*[@text='" + text + "' or @value='" + text + "']")));
 	}
 
 	/**
@@ -239,7 +218,9 @@ public abstract class BasePage {
 	 * @return = true if found, false if not
 	 */
 	public boolean elementExists(String text, int timeout) {
-		return elementExists(MobileBy.xpath("//*[@text=\"" + text + "\"]"), timeout);
+		return elementExists(
+				getDriver().findElements(MobileBy.xpath("//*[@text='" + text + "' or @value='" + text + "']")),
+				timeout);
 	}
 
 	/**
@@ -252,7 +233,7 @@ public abstract class BasePage {
 	 * @return = true if found, false if not
 	 */
 	public boolean elementExists(String attribute, String text) {
-		return elementExists(MobileBy.xpath("//*[@" + attribute + "=\"" + text + "\"]"));
+		return elementExists(getDriver().findElements(MobileBy.xpath("//*[@" + attribute + "='" + text + "']")));
 	}
 
 	/**
@@ -267,7 +248,8 @@ public abstract class BasePage {
 	 * @return = true if found, false if not
 	 */
 	public boolean elementExists(String attribute, String text, int timeout) {
-		return elementExists(MobileBy.xpath("//*[@" + attribute + "=\"" + text + "\"]"), timeout);
+		return elementExists(getDriver().findElements(MobileBy.xpath("//*[@" + attribute + "='" + text + "']")),
+				timeout);
 	}
 
 	/**
@@ -340,35 +322,6 @@ public abstract class BasePage {
 	 */
 	public void scrollUp() {
 		scroll(0.1, 0.9);
-	}
-
-	/**
-	 * Make a scroll inside the By element defined by the params
-	 * 
-	 * @param by
-	 * @param inicio
-	 * @param fim
-	 */
-	public void scroll(By by, double inicio, double fim) {
-		scroll(getDriver().findElement(by), inicio, fim);
-	}
-
-	/**
-	 * Make a long scroll inside the By element from the bottom to the top
-	 * 
-	 * @param element
-	 */
-	public void scrollDown(By by) {
-		scroll(getDriver().findElement(by), 0.9, 0.1);
-	}
-
-	/**
-	 * Make a long scroll inside the By element from the top to the bottom
-	 * 
-	 * @param element
-	 */
-	public void scrollUp(By by) {
-		scroll(getDriver().findElement(by), 0.1, 0.9);
 	}
 
 	/**
@@ -496,36 +449,15 @@ public abstract class BasePage {
 	}
 
 	/**
-	 * Set the implicitly wait of the driver to its default value, defined in
-	 * DEFAULD_IMPLICITLY_WAIT constant in BaseConstants
-	 * 
-	 * @param seconds
-	 */
-	public void setImplicitlyWait() {
-		setImplicitlyWait(DEFAULT_IMPLICITLY_WAIT);
-	}
-
-	/**
-	 * Set the implicitly wait of the driver
-	 * 
-	 * @param seconds
-	 */
-	public void setImplicitlyWait(int seconds) {
-		getDriver().manage()
-			.timeouts()
-			.implicitlyWait(seconds, TimeUnit.SECONDS);
-	}
-
-	/**
 	 * Check if the element exists in the page, if not, make a short scroll to find
 	 * the element a number of times equals to the
 	 * DEFAULT_MAX_SCROLLS_TO_FIND_ELEMENT constant in BaseConstants
 	 * 
-	 * @param by
+	 * @param element
 	 *            = The element
 	 */
-	public void checkNeedOfScrollToShowElement(By by) {
-		checkNeedOfScrollToShowElement(by, BaseConstants.DEFAULT_MAX_SCROLLS_TO_FIND_ELEMENT, false);
+	public void checkNeedOfScrollToShowElement(MobileElement element) {
+		checkNeedOfScrollToShowElement(element, BaseConstants.DEFAULT_MAX_SCROLLS_TO_FIND_ELEMENT, false);
 	}
 
 	/**
@@ -533,21 +465,21 @@ public abstract class BasePage {
 	 * element a number of times equals to the DEFAULT_MAX_SCROLLS_TO_FIND_ELEMENT
 	 * constant in BaseConstants
 	 * 
-	 * @param by
+	 * @param element
 	 *            = The element
 	 * @param longScroll
 	 *            = true for a long scroll (0.9 to 0.2) or false for a short scroll
 	 *            (0.6 to 0.4)
 	 */
-	public void checkNeedOfScrollToShowElement(By by, boolean longScroll) {
-		checkNeedOfScrollToShowElement(by, BaseConstants.DEFAULT_MAX_SCROLLS_TO_FIND_ELEMENT, longScroll);
+	public void checkNeedOfScrollToShowElement(MobileElement element, boolean longScroll) {
+		checkNeedOfScrollToShowElement(element, BaseConstants.DEFAULT_MAX_SCROLLS_TO_FIND_ELEMENT, longScroll);
 	}
 
 	/**
 	 * Check if the element exists in the page, if not, make a scroll to find the
 	 * element
 	 * 
-	 * @param by
+	 * @param element
 	 *            = The element
 	 * @param maxScrolls
 	 *            = Max scrolls before stop scrolling
@@ -555,10 +487,9 @@ public abstract class BasePage {
 	 *            = true for a long scroll (0.9 to 0.2) or false for a short scroll
 	 *            (0.6 to 0.4)
 	 */
-	public void checkNeedOfScrollToShowElement(By by, int maxScrolls, boolean longScroll) {
-		setImplicitlyWait(2);
+	public void checkNeedOfScrollToShowElement(MobileElement element, int maxScrolls, boolean longScroll) {
 		for (int i = 1; i <= maxScrolls; i++) {
-			if (!elementExists(by)) {
+			if (!elementExists(element)) {
 				if (longScroll) {
 					scroll(0.8, 0.2);
 				} else {
@@ -568,7 +499,6 @@ public abstract class BasePage {
 				break;
 			}
 		}
-		setImplicitlyWait(DEFAULT_IMPLICITLY_WAIT);
 	}
 
 	/**
@@ -582,7 +512,7 @@ public abstract class BasePage {
 	 *            = The attribute value
 	 */
 	public void checkNeedOfScrollToShowElement(String attribute, String value) {
-		checkNeedOfScrollToShowElement(By.xpath("//*[@" + attribute + "=\"" + value + "\"]"));
+		checkNeedOfScrollToShowElement(getDriver().findElement(By.xpath("//*[@" + attribute + "=\"" + value + "\"]")));
 	}
 
 	/**
@@ -599,7 +529,8 @@ public abstract class BasePage {
 	 *            (0.6 to 0.4)
 	 */
 	public void checkNeedOfScrollToShowElement(String attribute, String value, boolean longScroll) {
-		checkNeedOfScrollToShowElement(By.xpath("//*[@" + attribute + "=\"" + value + "\"]"), longScroll);
+		checkNeedOfScrollToShowElement(getDriver().findElement(By.xpath("//*[@" + attribute + "=\"" + value + "\"]")),
+				longScroll);
 	}
 
 	/**
@@ -617,7 +548,8 @@ public abstract class BasePage {
 	 *            (0.6 to 0.4)
 	 */
 	public void checkNeedOfScrollToShowElement(String attribute, String value, int maxScrolls, boolean longScroll) {
-		checkNeedOfScrollToShowElement(By.xpath("//*[@" + attribute + "=\"" + value + "\"]"), maxScrolls, longScroll);
+		checkNeedOfScrollToShowElement(getDriver().findElement(By.xpath("//*[@" + attribute + "=\"" + value + "\"]")),
+				maxScrolls, longScroll);
 	}
 
 	/**
@@ -633,4 +565,26 @@ public abstract class BasePage {
 			.replaceAll("\\s+", " ")
 			.trim();
 	}
+
+	/**
+	 * Execute the initElements of the Page Factory with a field decorator timeout
+	 * equals to the param seconds
+	 * 
+	 * @param page
+	 * @param seconds
+	 */
+	public void initElements(Object page, Duration seconds) {
+		PageFactory.initElements(new AppiumFieldDecorator(getDriver(), seconds), page);
+	}
+
+	/**
+	 * Execute the initElements of the Page Factory with a field decorator timeout
+	 * equals to the default in BaseConstants
+	 * 
+	 * @param page
+	 */
+	public void initElements(Object page) {
+		initElements(page, BaseConstants.DEFAULT_FACTORY_DURATION);
+	}
+
 }

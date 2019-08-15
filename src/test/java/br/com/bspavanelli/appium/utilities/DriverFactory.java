@@ -78,6 +78,8 @@ public class DriverFactory {
 					e.printStackTrace();
 				}
 				break;
+			default:
+				break;
 		}
 		driver.manage()
 			.timeouts()

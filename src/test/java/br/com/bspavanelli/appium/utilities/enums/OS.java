@@ -1,7 +1,7 @@
 package br.com.bspavanelli.appium.utilities.enums;
 
 public enum OS {
-	ANDROID("Android"), IOS("IOS");
+	ANDROID("Android"), IOS("IOS"), BOTH("Both");
 
 	private String valor;
 

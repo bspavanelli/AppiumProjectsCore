@@ -28,10 +28,10 @@ public class CheckNeedToRunOnPlatform implements TestRule {
 			}
 		};
 	}
-	
+
 	public boolean verifyIfWillTestInPlatform(OS os) {
-		OS OSMaven = System.getProperty("executionOS") == null ? OS.BOTH
-				: OS.valueOfIgnoreCase(System.getProperty("executionOS"));
+		OS OSMaven = (System.getProperty("executionOS") == null || System.getProperty("executionOS")
+			.equals("")) ? OS.BOTH : OS.valueOfIgnoreCase(System.getProperty("executionOS"));
 
 		switch (OSMaven) {
 			case ANDROID:

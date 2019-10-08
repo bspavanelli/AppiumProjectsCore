@@ -18,7 +18,7 @@ public class BaseTest {
 	protected LoginPage loginPage;
 	protected HomePage homePage;
 
-	public void setUp() {
+	public void setUpPages() {
 		System.out.println("Iniciando os testes do método '" + testName.getMethodName() + "' na plataforma '"
 				+ BaseConstants.executionOS.getValor() + "'!");
 

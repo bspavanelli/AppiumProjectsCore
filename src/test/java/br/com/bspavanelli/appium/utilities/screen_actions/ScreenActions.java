@@ -50,7 +50,7 @@ public abstract class ScreenActions {
 	 * 
 	 * @param element
 	 * @param attribute
-	 * @return
+	 * @return value of the element attribute
 	 */
 	public String getAttribute(MobileElement element, String attribute) {
 		String text = "";
@@ -67,7 +67,8 @@ public abstract class ScreenActions {
 	 * Get the text of the element
 	 * 
 	 * @param element
-	 * @return
+	 * @return text of the element
+	 * 
 	 */
 	public String getText(MobileElement element) {
 		String text = "";
@@ -93,7 +94,9 @@ public abstract class ScreenActions {
 	/**
 	 * Click on an element found in a list with the following value of an attribute
 	 * 
-	 * @param element
+	 * @param elements
+	 * @param attribute
+	 * @param value
 	 */
 	public void click(List<MobileElement> elements, String attribute, String value) {
 		for (MobileElement element : elements) {
@@ -154,7 +157,7 @@ public abstract class ScreenActions {
 	 * Verify if the attribute checked of the element is true
 	 * 
 	 * @param element
-	 * @return
+	 * @return true if checked, false if not
 	 */
 	public boolean isChecked(MobileElement element) {
 		return element.getAttribute("checked")
@@ -179,7 +182,7 @@ public abstract class ScreenActions {
 	/**
 	 * Check if the element exists
 	 * 
-	 * @param element
+	 * @param elements
 	 * @return = true if found, false if not
 	 */
 	public boolean elementExists(List<MobileElement> elements) {
@@ -189,7 +192,7 @@ public abstract class ScreenActions {
 	/**
 	 * Check if the element exists
 	 * 
-	 * @param element
+	 * @param elements
 	 * @param timeout
 	 *            = the implicitly wait to be set before the check
 	 * @return = true if found, false if not
@@ -309,7 +312,6 @@ public abstract class ScreenActions {
 	/**
 	 * Make a long scroll from the bottom to the top
 	 * 
-	 * @param element
 	 */
 	public void scrollDown() {
 		scroll(0.9, 0.1);
@@ -318,7 +320,6 @@ public abstract class ScreenActions {
 	/**
 	 * Make a long scroll from the top to the bottom
 	 * 
-	 * @param element
 	 */
 	public void scrollUp() {
 		scroll(0.1, 0.9);
@@ -392,7 +393,6 @@ public abstract class ScreenActions {
 	/**
 	 * Make a long swipe from the left to the right
 	 * 
-	 * @param element
 	 */
 	public void swipeLeft() {
 		swipe(0.1, 0.9);
@@ -401,7 +401,6 @@ public abstract class ScreenActions {
 	/**
 	 * Make a long swipe from the right to the left
 	 * 
-	 * @param element
 	 */
 	public void swipeRight() {
 		swipe(0.9, 0.1);

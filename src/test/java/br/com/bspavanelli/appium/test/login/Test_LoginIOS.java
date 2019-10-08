@@ -26,7 +26,7 @@ public class Test_LoginIOS extends LoginTest {
 		setUpPages();
 	}
 
-	@Severity(value = SeverityLevel.CRITICAL)
+	@Severity(value = SeverityLevel.NORMAL)
 	@Epic("IOS")
 	@Feature("Login")
 	@Story("Realizar Login")

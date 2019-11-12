@@ -20,14 +20,14 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 @SuppressWarnings({ "rawtypes" })
-public abstract class ScreenActions {
+public class ScreenActions {
 	/**
 	 * Perform a sleep
 	 * 
 	 * @param time
 	 *            = Time in miliseconds
 	 */
-	public void sleep(long time) {
+	protected void sleep(long time) {
 		try {
 			Thread.sleep(time);
 		} catch (InterruptedException e) {
@@ -41,7 +41,7 @@ public abstract class ScreenActions {
 	 * @param element
 	 * @param text
 	 */
-	public void sendKeys(MobileElement element, String text) {
+	protected void sendKeys(MobileElement element, String text) {
 		element.sendKeys(text);
 	}
 
@@ -52,7 +52,7 @@ public abstract class ScreenActions {
 	 * @param attribute
 	 * @return value of the element attribute
 	 */
-	public String getAttribute(MobileElement element, String attribute) {
+	protected String getAttribute(MobileElement element, String attribute) {
 		String text = "";
 		try {
 			text = element.getAttribute(attribute);
@@ -70,7 +70,7 @@ public abstract class ScreenActions {
 	 * @return text of the element
 	 * 
 	 */
-	public String getText(MobileElement element) {
+	protected String getText(MobileElement element) {
 		String text = "";
 		try {
 			text = element.getText();
@@ -86,7 +86,7 @@ public abstract class ScreenActions {
 	 * 
 	 * @param element
 	 */
-	public void click(MobileElement element) {
+	protected void click(MobileElement element) {
 		element.click();
 		sleep(1000);
 	}
@@ -98,7 +98,7 @@ public abstract class ScreenActions {
 	 * @param attribute
 	 * @param value
 	 */
-	public void click(List<MobileElement> elements, String attribute, String value) {
+	protected void click(List<MobileElement> elements, String attribute, String value) {
 		for (MobileElement element : elements) {
 			if (removeOtherSpaces(element.getAttribute(attribute)).equals(value)) {
 				element.click();
@@ -114,7 +114,7 @@ public abstract class ScreenActions {
 	 * 
 	 * @param text
 	 */
-	public void click(String text) {
+	protected void click(String text) {
 		click(getDriver().findElement(By.xpath("//*[@text='" + text + "' or @value='" + text + "']")));
 	}
 
@@ -125,7 +125,7 @@ public abstract class ScreenActions {
 	 *            = the attribute to search
 	 * @param text
 	 */
-	public void click(String attribute, String value) {
+	protected void click(String attribute, String value) {
 		click(getDriver().findElement(By.xpath("//*[@" + attribute + "='" + value + "']")));
 	}
 
@@ -134,7 +134,7 @@ public abstract class ScreenActions {
 	 * 
 	 * @param element
 	 */
-	public void longClick(MobileElement element) {
+	protected void longClick(MobileElement element) {
 		TouchActions action = new TouchActions(getDriver());
 		action.longPress(element)
 			.perform();
@@ -148,7 +148,7 @@ public abstract class ScreenActions {
 	 * @param value
 	 *            = Value to select
 	 */
-	public void selectCombo(MobileElement element, String value) {
+	protected void selectCombo(MobileElement element, String value) {
 		element.click();
 		click(value);
 	}
@@ -159,7 +159,7 @@ public abstract class ScreenActions {
 	 * @param element
 	 * @return true if checked, false if not
 	 */
-	public boolean isChecked(MobileElement element) {
+	protected boolean isChecked(MobileElement element) {
 		return element.getAttribute("checked")
 			.equals("true");
 	}
@@ -170,7 +170,7 @@ public abstract class ScreenActions {
 	 * @param element
 	 * @return = true if found, false if not
 	 */
-	public boolean elementExists(MobileElement element) {
+	protected boolean elementExists(MobileElement element) {
 		try {
 			element.isDisplayed();
 		} catch (Exception e) {
@@ -185,7 +185,7 @@ public abstract class ScreenActions {
 	 * @param elements
 	 * @return = true if found, false if not
 	 */
-	public boolean elementExists(List<MobileElement> elements) {
+	protected boolean elementExists(List<MobileElement> elements) {
 		return elements.size() > 0;
 	}
 
@@ -197,7 +197,7 @@ public abstract class ScreenActions {
 	 *            = the implicitly wait to be set before the check
 	 * @return = true if found, false if not
 	 */
-	public boolean elementExists(List<MobileElement> elements, int timeout) {
+	protected boolean elementExists(List<MobileElement> elements, int timeout) {
 		return elements.size() > 0;
 	}
 
@@ -207,7 +207,7 @@ public abstract class ScreenActions {
 	 * @param text
 	 * @return = true if found, false if not
 	 */
-	public boolean elementExists(String text) {
+	protected boolean elementExists(String text) {
 		return elementExists(
 				getDriver().findElements(MobileBy.xpath("//*[@text='" + text + "' or @value='" + text + "']")));
 	}
@@ -220,7 +220,7 @@ public abstract class ScreenActions {
 	 *            = the implicitly wait to be set before the check
 	 * @return = true if found, false if not
 	 */
-	public boolean elementExists(String text, int timeout) {
+	protected boolean elementExists(String text, int timeout) {
 		return elementExists(
 				getDriver().findElements(MobileBy.xpath("//*[@text='" + text + "' or @value='" + text + "']")),
 				timeout);
@@ -235,7 +235,7 @@ public abstract class ScreenActions {
 	 *            = the value of the attribute
 	 * @return = true if found, false if not
 	 */
-	public boolean elementExists(String attribute, String text) {
+	protected boolean elementExists(String attribute, String text) {
 		return elementExists(getDriver().findElements(MobileBy.xpath("//*[@" + attribute + "='" + text + "']")));
 	}
 
@@ -250,7 +250,7 @@ public abstract class ScreenActions {
 	 *            = the implicitly wait to be set before the check
 	 * @return = true if found, false if not
 	 */
-	public boolean elementExists(String attribute, String text, int timeout) {
+	protected boolean elementExists(String attribute, String text, int timeout) {
 		return elementExists(getDriver().findElements(MobileBy.xpath("//*[@" + attribute + "='" + text + "']")),
 				timeout);
 	}
@@ -261,7 +261,7 @@ public abstract class ScreenActions {
 	 * @param x
 	 * @param y
 	 */
-	public void tap(int x, int y) {
+	protected void tap(int x, int y) {
 		new TouchAction(getDriver()).tap(point(x, y))
 			.waitAction(waitOptions(Duration.ofMillis(250)))
 			.perform();
@@ -280,7 +280,7 @@ public abstract class ScreenActions {
 	 *            = número de 0 a 1, sendo 0 a posição horizontal mais a esquerda e
 	 *            1 a posição horizontal mais a direita
 	 */
-	public void scroll(double inicio, double fim, double posicaoHorizontal) {
+	protected void scroll(double inicio, double fim, double posicaoHorizontal) {
 		Dimension size = getDriver().manage()
 			.window()
 			.getSize();
@@ -305,7 +305,7 @@ public abstract class ScreenActions {
 	 * @param inicio
 	 * @param fim
 	 */
-	public void scroll(double inicio, double fim) {
+	protected void scroll(double inicio, double fim) {
 		scroll(inicio, fim, 0.5);
 	}
 
@@ -313,7 +313,7 @@ public abstract class ScreenActions {
 	 * Make a long scroll from the bottom to the top
 	 * 
 	 */
-	public void scrollDown() {
+	protected void scrollDown() {
 		scroll(0.9, 0.1);
 	}
 
@@ -321,7 +321,7 @@ public abstract class ScreenActions {
 	 * Make a long scroll from the top to the bottom
 	 * 
 	 */
-	public void scrollUp() {
+	protected void scrollUp() {
 		scroll(0.1, 0.9);
 	}
 
@@ -332,7 +332,7 @@ public abstract class ScreenActions {
 	 * @param inicio
 	 * @param fim
 	 */
-	public void scroll(MobileElement element, double inicio, double fim) {
+	protected void scroll(MobileElement element, double inicio, double fim) {
 		Dimension size = element.getSize();
 
 		int x = size.width / 2;
@@ -353,7 +353,7 @@ public abstract class ScreenActions {
 	 * 
 	 * @param element
 	 */
-	public void scrollDown(MobileElement element) {
+	protected void scrollDown(MobileElement element) {
 		scroll(element, 0.9, 0.1);
 	}
 
@@ -362,7 +362,7 @@ public abstract class ScreenActions {
 	 * 
 	 * @param element
 	 */
-	public void scrollUp(MobileElement element) {
+	protected void scrollUp(MobileElement element) {
 		scroll(element, 0.1, 0.9);
 	}
 
@@ -372,7 +372,7 @@ public abstract class ScreenActions {
 	 * @param inicio
 	 * @param fim
 	 */
-	public void swipe(double inicio, double fim) {
+	protected void swipe(double inicio, double fim) {
 		Dimension size = getDriver().manage()
 			.window()
 			.getSize();
@@ -394,7 +394,7 @@ public abstract class ScreenActions {
 	 * Make a long swipe from the left to the right
 	 * 
 	 */
-	public void swipeLeft() {
+	protected void swipeLeft() {
 		swipe(0.1, 0.9);
 	}
 
@@ -402,7 +402,7 @@ public abstract class ScreenActions {
 	 * Make a long swipe from the right to the left
 	 * 
 	 */
-	public void swipeRight() {
+	protected void swipeRight() {
 		swipe(0.9, 0.1);
 	}
 
@@ -413,7 +413,7 @@ public abstract class ScreenActions {
 	 * @param inicio
 	 * @param fim
 	 */
-	public void swipeElement(MobileElement element, double inicio, double fim) {
+	protected void swipeElement(MobileElement element, double inicio, double fim) {
 		Dimension size = element.getSize();
 
 		int xInicial = (int) (size.width * inicio);
@@ -434,7 +434,7 @@ public abstract class ScreenActions {
 	 * 
 	 * @param element
 	 */
-	public void swipeElementLeft(MobileElement element) {
+	protected void swipeElementLeft(MobileElement element) {
 		swipeElement(element, 0.1, 0.9);
 	}
 
@@ -443,7 +443,7 @@ public abstract class ScreenActions {
 	 * 
 	 * @param element
 	 */
-	public void swipeElementRight(MobileElement element) {
+	protected void swipeElementRight(MobileElement element) {
 		swipeElement(element, 0.9, 0.1);
 	}
 
@@ -455,7 +455,7 @@ public abstract class ScreenActions {
 	 * @param element
 	 *            = The element
 	 */
-	public void checkNeedOfScrollToShowElement(MobileElement element) {
+	protected void checkNeedOfScrollToShowElement(MobileElement element) {
 		checkNeedOfScrollToShowElement(element, BaseConstants.DEFAULT_MAX_SCROLLS_TO_FIND_ELEMENT, false);
 	}
 
@@ -470,7 +470,7 @@ public abstract class ScreenActions {
 	 *            = true for a long scroll (0.9 to 0.2) or false for a short scroll
 	 *            (0.6 to 0.4)
 	 */
-	public void checkNeedOfScrollToShowElement(MobileElement element, boolean longScroll) {
+	protected void checkNeedOfScrollToShowElement(MobileElement element, boolean longScroll) {
 		checkNeedOfScrollToShowElement(element, BaseConstants.DEFAULT_MAX_SCROLLS_TO_FIND_ELEMENT, longScroll);
 	}
 
@@ -486,7 +486,7 @@ public abstract class ScreenActions {
 	 *            = true for a long scroll (0.9 to 0.2) or false for a short scroll
 	 *            (0.6 to 0.4)
 	 */
-	public void checkNeedOfScrollToShowElement(MobileElement element, int maxScrolls, boolean longScroll) {
+	protected void checkNeedOfScrollToShowElement(MobileElement element, int maxScrolls, boolean longScroll) {
 		for (int i = 1; i <= maxScrolls; i++) {
 			if (!elementExists(element)) {
 				if (longScroll) {
@@ -510,7 +510,7 @@ public abstract class ScreenActions {
 	 * @param value
 	 *            = The attribute value
 	 */
-	public void checkNeedOfScrollToShowElement(String attribute, String value) {
+	protected void checkNeedOfScrollToShowElement(String attribute, String value) {
 		checkNeedOfScrollToShowElement(getDriver().findElement(By.xpath("//*[@" + attribute + "=\"" + value + "\"]")));
 	}
 
@@ -527,7 +527,7 @@ public abstract class ScreenActions {
 	 *            = true for a long scroll (0.9 to 0.2) or false for a short scroll
 	 *            (0.6 to 0.4)
 	 */
-	public void checkNeedOfScrollToShowElement(String attribute, String value, boolean longScroll) {
+	protected void checkNeedOfScrollToShowElement(String attribute, String value, boolean longScroll) {
 		checkNeedOfScrollToShowElement(getDriver().findElement(By.xpath("//*[@" + attribute + "=\"" + value + "\"]")),
 				longScroll);
 	}
@@ -546,7 +546,7 @@ public abstract class ScreenActions {
 	 *            = true for a long scroll (0.9 to 0.2) or false for a short scroll
 	 *            (0.6 to 0.4)
 	 */
-	public void checkNeedOfScrollToShowElement(String attribute, String value, int maxScrolls, boolean longScroll) {
+	protected void checkNeedOfScrollToShowElement(String attribute, String value, int maxScrolls, boolean longScroll) {
 		checkNeedOfScrollToShowElement(getDriver().findElement(By.xpath("//*[@" + attribute + "=\"" + value + "\"]")),
 				maxScrolls, longScroll);
 	}
@@ -559,7 +559,7 @@ public abstract class ScreenActions {
 	 * @return string with only simple spaces
 	 *
 	 */
-	public String removeOtherSpaces(String string) {
+	protected String removeOtherSpaces(String string) {
 		return string.replaceAll("\u00a0", " ")
 			.replaceAll("\\s+", " ")
 			.trim();
@@ -572,7 +572,7 @@ public abstract class ScreenActions {
 	 * @param page
 	 * @param seconds
 	 */
-	public void initElements(Object page, Duration seconds) {
+	protected void initElements(Object page, Duration seconds) {
 		PageFactory.initElements(new AppiumFieldDecorator(getDriver(), seconds), page);
 	}
 
@@ -582,7 +582,7 @@ public abstract class ScreenActions {
 	 * 
 	 * @param page
 	 */
-	public void initElements(Object page) {
+	protected void initElements(Object page) {
 		initElements(page, BaseConstants.DEFAULT_FACTORY_DURATION);
 	}
 

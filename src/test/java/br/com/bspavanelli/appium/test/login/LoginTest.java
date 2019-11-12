@@ -5,10 +5,11 @@ import br.com.bspavanelli.appium.utilities.BaseTest;
 public class LoginTest extends BaseTest {
 
 	public void realizarLogin() {
-		loginPage.writeUsername()
+		loginPage.clickStartLogin()
+			.writeCPF()
 			.writePassword()
 			.clickLogin();
-		
+
 		homePage.validateHeader();
 	}
 }

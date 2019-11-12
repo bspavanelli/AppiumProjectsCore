@@ -1,41 +1,46 @@
 package br.com.bspavanelli.appium.page.login;
 
+import org.openqa.selenium.support.FindBy;
+
 import br.com.bspavanelli.appium.constants.login.LoginConstants;
 import br.com.bspavanelli.appium.utilities.screen_actions.ScreenActions;
 import io.appium.java_client.MobileElement;
-import io.appium.java_client.pagefactory.AndroidFindBy;
-import io.appium.java_client.pagefactory.iOSXCUITFindBy;
 
 public class LoginPage extends ScreenActions {
 
-	@AndroidFindBy(id = "")
-	@iOSXCUITFindBy(id = "")
-	private MobileElement FLD_USERNAME;
+	@FindBy(id = "login_cpf")
+	private MobileElement fld_cpf;
 
-	@AndroidFindBy(id = "")
-	@iOSXCUITFindBy(id = "")
-	private MobileElement FLD_PASSWORD;
+	@FindBy(id = "login_password")
+	private MobileElement fld_password;
 
-	@AndroidFindBy(id = "")
-	@iOSXCUITFindBy(id = "")
-	private MobileElement BTN_LOGIN;
+	@FindBy(id = "login_join")
+	private MobileElement btn_login;
+
+	@FindBy(id = "tutorial_join")
+	private MobileElement btn_startLogin;
 
 	public LoginPage() {
 		initElements(this);
 	}
 
-	public LoginPage writeUsername() {
-		sendKeys(FLD_USERNAME, LoginConstants.USERNAME);
+	public LoginPage clickStartLogin() {
+		btn_startLogin.click();
+		return this;
+	}
+
+	public LoginPage writeCPF() {
+		fld_cpf.sendKeys(LoginConstants.CPF);
 		return this;
 	}
 
 	public LoginPage writePassword() {
-		sendKeys(FLD_PASSWORD, LoginConstants.PASSWORD);
+		fld_password.sendKeys(LoginConstants.PASSWORD);
 		return this;
 	}
 
 	public LoginPage clickLogin() {
-		click(BTN_LOGIN);
+		btn_login.click();
 		return this;
 	}
 }

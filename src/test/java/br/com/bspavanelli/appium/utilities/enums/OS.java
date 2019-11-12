@@ -19,7 +19,7 @@ public enum OS {
 				return os;
 		}
 		throw new IllegalArgumentException(
-				"OS Not found! Possible options: 'IOS' and 'Android'. Option sent: '" + valor + "'");
+				"OS Not found! Possible options: 'IOS', 'Android' and 'Both'. Option sent: '" + valor + "'");
 	}
 
 	public static OS valueOfIgnoreCase(String value) {

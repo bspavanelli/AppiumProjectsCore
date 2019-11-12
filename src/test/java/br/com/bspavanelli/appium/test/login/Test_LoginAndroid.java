@@ -26,7 +26,7 @@ public class Test_LoginAndroid extends LoginTest {
 		setUpPages();
 	}
 
-	@Severity(value = SeverityLevel.NORMAL)
+	@Severity(SeverityLevel.CRITICAL)
 	@Epic("Android")
 	@Feature("Login")
 	@Story("Realizar Login")

@@ -25,13 +25,14 @@ public class Test_LoginIOS extends LoginTest {
 		BaseConstants.executionOS = os;
 		setUpPages();
 	}
-
-	@Severity(value = SeverityLevel.NORMAL)
+	
+	@Severity(SeverityLevel.NORMAL)
 	@Epic("IOS")
 	@Feature("Login")
 	@Story("Realizar Login")
 	@Test
-	public void realizarLogin() {
+	public void realizarLoginNormal() {
 		super.realizarLogin();
 	}
+	
 }
